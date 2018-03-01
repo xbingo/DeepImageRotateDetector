@@ -3,10 +3,14 @@
 
 import os
 from PIL import Image
+from PIL import ImageFile
 import shutil
 
-SRC_PATH = '/Users/xbingo/Downloads/ChallengeDB_release/Images/'
-DST_PATH = '/Users/xbingo/Downloads/TestRotate'
+
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
+SRC_PATH = '/Users/rubinxie/data/qzone_tag_data/20180110'
+DST_PATH = '/Users/rubinxie/data/TestRotate'
 IMG_SUFFIX = ['.jpg', '.png', '.bmp']
 SIZE_THRESHOLD = 3 * 1024
 DIR_NAME = ['up', 'left', 'down', 'right']
@@ -30,8 +34,8 @@ def process(path):
             photo_path = os.path.join(root, f)
             if os.path.getsize(photo_path) < SIZE_THRESHOLD:
                 continue
-            img = Image.open(photo_path)
-            small_img = img.resize((TAGET_SIZE, TAGET_SIZE))
+            img = Image.open(photo_path).convert('RGB')
+            small_img = img.resize((TAGET_SIZE, TAGET_SIZE), Image.BICUBIC)
             save_file(small_img, 0, split[0])
 
             for i in range(1, 4):
